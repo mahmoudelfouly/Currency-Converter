@@ -1,6 +1,7 @@
 package com.melfouly.currency.di
 
 import com.melfouly.currency.local.CurrenciesDao
+import com.melfouly.currency.local.DbHelper
 import com.melfouly.currency.network.RetrofitService
 import com.melfouly.currency.repository.Repository
 import com.melfouly.currency.repository.RepositoryImpl
@@ -17,8 +18,8 @@ object RepoModule {
 
     @Singleton
     @Provides
-    fun provideRepository(retrofitService: RetrofitService, currenciesDao: CurrenciesDao): Repository {
-        return RepositoryImpl(retrofitService, currenciesDao)
+    fun provideRepository(retrofitService: RetrofitService, currenciesDao: CurrenciesDao, dbHelper: DbHelper): Repository {
+        return RepositoryImpl(retrofitService, currenciesDao, dbHelper)
     }
 }
 

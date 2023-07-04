@@ -44,4 +44,11 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="exchange_currency_content_desc">Exchange currency</string>
+    <string name="home">Home</string>
+    <string name="transitions">Transitions</string>
+    <string name="amount">Amount</string>
+    <string name="currency">Currency</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+
 </resources>

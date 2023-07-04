@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.melfouly.currency.local.CurrenciesDao
 import com.melfouly.currency.local.CurrenciesDatabase
+import com.melfouly.currency.local.DbHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +24,11 @@ object LocalModule {
             CurrenciesDatabase::class.java,
             "currenciesDb.db"
         ).build().currenciesDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSQLDatabase(application: Application): DbHelper {
+        return DbHelper(application, null)
     }
 }

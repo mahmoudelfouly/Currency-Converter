@@ -14,4 +14,7 @@ interface CurrenciesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCurrencies(currency: Currencies)
+
+    @Query("SELECT COUNT(*) FROM currencies WHERE symbol = :symbol")
+    fun currencyExistsBySymbol(symbol: String): Boolean
 }

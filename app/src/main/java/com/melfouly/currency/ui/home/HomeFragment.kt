@@ -1,57 +1,61 @@
-package com.melfouly.currency
+package com.melfouly.currency.ui.home
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.core.widget.doOnTextChanged
-import com.melfouly.currency.databinding.ActivityMainBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.melfouly.currency.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class HomeFragment : Fragment() {
 
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+    private lateinit var binding: FragmentHomeBinding
+    private val viewModel: HomeViewModel by viewModels()
     private lateinit var symbolsAdapter: ArrayAdapter<String>
     private var fromSpinnerValuePosition: Int = 0
     private var toSpinnerValuePosition: Int = 0
+    private var amount: Double = 1.0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment.
+        binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        Log.d("Instance", "MainActivity ViewModel object: $viewModel")
+        Log.d("Instance", "HomeFragment ViewModel object: $viewModel")
 
         viewModel.getAllCurrencies()
         viewModel.getCurrenciesLocally()
 
         // When editText changes
-        binding.fromEdittext.doOnTextChanged { text, start, before, count ->
-            viewModel.convertCurrency(
-                binding.fromSpinner.selectedItem.toString(),
-                binding.toSpinner.selectedItem.toString(),
-                text.toString().toDouble()
-            )
-            Log.d("Main", "${binding.fromSpinner.selectedItem},\n" +
-                    "${binding.toSpinner.selectedItem},\n" +
-                    "${text.toString().toDouble()}")
+        binding.fromEdittext.doOnTextChanged { text, _, _, _ ->
+            if (text.toString() == "") {
+                amount = 1.0
+            } else {
+                amount = text.toString().toDouble()
+                viewModel.convertCurrency(
+                    binding.fromSpinner.selectedItem.toString(),
+                    binding.toSpinner.selectedItem.toString(),
+                    amount
+                )
+            }
+
         }
 
-        viewModel.currencyList.observe(this) {
+        viewModel.currencyList.observe(viewLifecycleOwner) {
             if (it.success) {
                 val symbols = it.symbols.keys.sorted()
                 symbolsAdapter = ArrayAdapter(
-                    this,
+                    requireActivity(),
                     androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                     symbols
                 )
@@ -59,14 +63,18 @@ class MainActivity : AppCompatActivity() {
                 binding.toSpinner.adapter = symbolsAdapter
 
             } else {
-                Toast.makeText(this, "Something went wrong, Please try again later", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireActivity(),
+                    "Something went wrong, Please try again later",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         if (!::symbolsAdapter.isInitialized) {
-            viewModel.localCurrencies.observe(this) { localCurrencies ->
+            viewModel.localCurrencies.observe(viewLifecycleOwner) { localCurrencies ->
                 symbolsAdapter = ArrayAdapter(
-                    this,
+                    requireActivity(),
                     androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                     localCurrencies
                 )
@@ -75,12 +83,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.convertedValue.observe(this) {
+        viewModel.convertedValue.observe(viewLifecycleOwner) {
             binding.convertedValue.text = it.result.toString()
             if (!it.success) {
                 // Edittext will be disabled and show toast with error info.
                 binding.fromEdittext.isEnabled = false
-                Toast.makeText(this, it.error?.info, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), it.error?.info, Toast.LENGTH_LONG).show()
 
             }
         }
@@ -115,12 +123,22 @@ class MainActivity : AppCompatActivity() {
         binding.exchangeButton.setOnClickListener {
             binding.fromSpinner.setSelection(toSpinnerValuePosition)
             binding.toSpinner.setSelection(fromSpinnerValuePosition)
-            viewModel.convertCurrency(
-                binding.fromSpinner.selectedItem.toString(),
-                binding.toSpinner.selectedItem.toString(),
-                binding.fromEdittext.text.toString().toDouble()
-            )
+            amount = binding.fromEdittext.text.toString().toDouble()
+
+            if (binding.fromEdittext.text.toString() == "") {
+                amount = 0.0
+            } else {
+                viewModel.convertCurrency(
+                    binding.fromSpinner.selectedItem.toString(),
+                    binding.toSpinner.selectedItem.toString(),
+                    amount
+                )
+            }
         }
 
+
+        return binding.root
     }
+
+
 }

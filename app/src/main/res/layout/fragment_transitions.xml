@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.transitions.TransitionsFragment">
+
+    <TextView
+        android:id="@+id/from"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:background="#9AAEBB"
+        android:gravity="center"
+        android:text="@string/from"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toStartOf="@id/to"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/to"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:background="#9AAEBB"
+        android:gravity="center"
+        android:text="@string/to"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/from"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/from_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/amount"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@id/from_symbol"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/from" />
+
+    <TextView
+        android:id="@+id/from_symbol"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/currency"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/from"
+        app:layout_constraintStart_toEndOf="@id/from_amount"
+        app:layout_constraintTop_toBottomOf="@id/from" />
+
+    <TextView
+        android:id="@+id/to_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/amount"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@id/to_symbol"
+        app:layout_constraintStart_toStartOf="@id/to"
+        app:layout_constraintTop_toBottomOf="@id/to" />
+
+    <TextView
+        android:id="@+id/to_symbol"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/currency"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/to"
+        app:layout_constraintStart_toEndOf="@id/to_amount"
+        app:layout_constraintTop_toBottomOf="@id/to" />
+
+    <TextView
+        android:id="@+id/from_amount_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@id/from_symbol"
+        app:layout_constraintStart_toStartOf="@id/from_amount"
+        app:layout_constraintTop_toBottomOf="@id/from_amount" />
+
+    <TextView
+        android:id="@+id/from_symbol_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/from"
+        app:layout_constraintStart_toEndOf="@id/from_amount"
+        app:layout_constraintTop_toBottomOf="@id/from_symbol" />
+
+    <TextView
+        android:id="@+id/to_amount_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@id/to_symbol"
+        app:layout_constraintStart_toStartOf="@id/to"
+        app:layout_constraintTop_toBottomOf="@id/to_amount" />
+
+    <TextView
+        android:id="@+id/to_symbol_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@id/to"
+        app:layout_constraintStart_toEndOf="@id/to_amount"
+        app:layout_constraintTop_toBottomOf="@id/to_symbol" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

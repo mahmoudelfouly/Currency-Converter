@@ -1,10 +1,11 @@
-package com.melfouly.currency
+package com.melfouly.currency.ui.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.melfouly.currency.local.Currencies
+import com.melfouly.currency.local.Transition
 import com.melfouly.currency.model.Conversion
 import com.melfouly.currency.model.CurrencyList
 import com.melfouly.currency.repository.Repository
@@ -16,10 +17,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repositoryImpl: Repository) :
+class HomeViewModel @Inject constructor(private val repositoryImpl: Repository) :
     ViewModel() {
 
-    private val TAG = "MainViewModel"
+    private val TAG = "HomeViewModel"
     private val _currencyList = MutableLiveData<CurrencyList>()
     val currencyList: LiveData<CurrencyList> get() = _currencyList
     private val _localCurrencies = MutableLiveData<List<String>>()
@@ -31,7 +32,7 @@ class MainViewModel @Inject constructor(private val repositoryImpl: Repository) 
     lateinit var converterDisposable: Disposable
 
     init {
-        Log.d("Instance", "ViewModel Repository object: $repositoryImpl")
+        Log.d("Instance", "HomeViewModel Repository object: $repositoryImpl")
     }
 
     fun getAllCurrencies() {
@@ -39,10 +40,13 @@ class MainViewModel @Inject constructor(private val repositoryImpl: Repository) 
         currenciesObservable.subscribeOn(Schedulers.io()) // UpStream in IO thread
             .observeOn(Schedulers.io()) // DownStream in IO thread
             .doAfterNext {
-                Log.d(TAG, "getAllCurrencies: doAfterNext called")
                 it.symbols.forEach { (key, value) ->
-                    val currency = Currencies(symbol = key, name = value)
-                    repositoryImpl.saveCurrencies(currency)
+                    if (!repositoryImpl.currencyExistsBySymbol(key)) {
+                        val currency = Currencies(symbol = key, name = value)
+                        Log.d(TAG, "getAllCurrencies: doAfterNext called, currencyExistsBySymbol is false for symbol $key")
+                        repositoryImpl.saveCurrencies(currency)
+                    }
+                    Log.d(TAG, "getAllCurrencies: doAfterNext called, currencyExistsBySymbol is true")
                 }
             }
             .observeOn(AndroidSchedulers.mainThread()) // DownStream in Main thread
@@ -53,6 +57,11 @@ class MainViewModel @Inject constructor(private val repositoryImpl: Repository) 
         val converterObservable =
             repositoryImpl.convertCurrency(from, to, amount) // Creating Observable
         converterObservable.subscribeOn(Schedulers.io()) // Upstream in IO thread
+            .doAfterNext {
+                val transition = Transition(amount, from, it.result, to)
+                Log.d(TAG, "convertCurrency: doAfterNext called, transition from $from to $to")
+                repositoryImpl.saveTransition(transition)
+            }
             .observeOn(AndroidSchedulers.mainThread()) // Downstream in Main thread
             .subscribe(setConvertCurrencyObserver()) // Create the subscription
     }
@@ -83,7 +92,7 @@ class MainViewModel @Inject constructor(private val repositoryImpl: Repository) 
             }
 
             override fun onComplete() {
-                Log.d(TAG, "currenciesObserver onComplete: called ")
+                Log.d(TAG, "currenciesObserver onComplete: called")
             }
         }
     }
