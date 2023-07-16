@@ -45,34 +45,24 @@
         app:layout_constraintStart_toEndOf="@id/exchange_button"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/from_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/textfield_compose"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="@id/from_spinner"
         app:layout_constraintStart_toStartOf="@id/from_spinner"
-        app:layout_constraintTop_toBottomOf="@id/from_spinner">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/from_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="ex: 10.5"
-            android:inputType="numberDecimal" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintBottom_toBottomOf="@id/converted_value"
+        app:layout_constraintTop_toBottomOf="@id/from_spinner" />
 
     <TextView
         android:id="@+id/converted_value"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="@id/to_spinner"
-        app:layout_constraintEnd_toEndOf="@id/to_spinner"
-        app:layout_constraintTop_toBottomOf="@id/to_spinner"
         android:layout_marginTop="16dp"
+        android:background="#E5E4E2"
         android:gravity="center"
-        android:background="#E5E4E2" />
+        app:layout_constraintEnd_toEndOf="@id/to_spinner"
+        app:layout_constraintStart_toStartOf="@id/to_spinner"
+        app:layout_constraintTop_toBottomOf="@id/to_spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

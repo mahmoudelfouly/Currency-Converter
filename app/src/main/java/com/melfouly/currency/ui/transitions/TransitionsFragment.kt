@@ -2,12 +2,11 @@ package com.melfouly.currency.ui.transitions
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.melfouly.currency.R
 import com.melfouly.currency.databinding.FragmentTransitionsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,7 +49,6 @@ class TransitionsFragment : Fragment() {
         clearTransitions()
         Log.d("Transitions", "onStop: called ${binding.fromAmountValue.text.isNotBlank()}")
     }
-
 
 
     private fun clearTransitions() {

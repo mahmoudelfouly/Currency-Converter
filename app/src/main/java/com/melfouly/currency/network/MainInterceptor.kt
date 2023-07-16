@@ -7,7 +7,7 @@ class MainInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         // Adding access key in url for every request or response.
         val url = chain.request().url().newBuilder()
-            .addQueryParameter("apikey", "YOUR_API_KEY").build()
+            .addQueryParameter("apikey", "YOUR_API_KEY").build() // SSSApi
 
         val request = chain.request()
             .newBuilder()
