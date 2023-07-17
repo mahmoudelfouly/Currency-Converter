@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "213197091954",
+    "project_id": "currency-converter-6b6a3",
+    "storage_bucket": "currency-converter-6b6a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213197091954:android:39d67452937b620a90feeb",
+        "android_client_info": {
+          "package_name": "com.melfouly.currency"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213197091954-iut5ece99j0g94ce6nm9l59rh8uldue1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP83q9owDQIeHPhQ1FcFZXgqCkfValD-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213197091954-iut5ece99j0g94ce6nm9l59rh8uldue1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

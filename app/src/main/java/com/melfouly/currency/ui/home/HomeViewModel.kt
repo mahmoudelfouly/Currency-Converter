@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.melfouly.currency.local.Currencies
-import com.melfouly.currency.local.Transition
-import com.melfouly.currency.model.Conversion
-import com.melfouly.currency.model.CurrencyList
-import com.melfouly.currency.repository.Repository
+import com.melfouly.domain.model.Conversion
+import com.melfouly.domain.model.Currencies
+import com.melfouly.domain.model.CurrencyList
+import com.melfouly.domain.model.Transition
+import com.melfouly.domain.usecase.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repositoryImpl: Repository) :
+class HomeViewModel @Inject constructor(private val useCase: HomeUseCase) :
     ViewModel() {
 
     private val TAG = "HomeViewModel"
@@ -32,21 +32,27 @@ class HomeViewModel @Inject constructor(private val repositoryImpl: Repository) 
     lateinit var converterDisposable: Disposable
 
     init {
-        Log.d("Instance", "HomeViewModel Repository object: $repositoryImpl")
+        Log.d("Instance", "HomeViewModel Repository object: $useCase")
     }
 
     fun getAllCurrencies() {
-        val currenciesObservable = repositoryImpl.getAllCurrencies() // Creating Observable
+        val currenciesObservable = useCase.getAllCurrencies() // Creating Observable
         currenciesObservable.subscribeOn(Schedulers.io()) // UpStream in IO thread
             .observeOn(Schedulers.io()) // DownStream in IO thread
             .doAfterNext {
                 it.symbols.forEach { (key, value) ->
-                    if (!repositoryImpl.currencyExistsBySymbol(key)) {
+                    if (!useCase.currencyExistsBySymbol(key)) {
                         val currency = Currencies(symbol = key, name = value)
-                        Log.d(TAG, "getAllCurrencies: doAfterNext called, currencyExistsBySymbol is false for symbol $key")
-                        repositoryImpl.saveCurrencies(currency)
+                        Log.d(
+                            TAG,
+                            "getAllCurrencies: doAfterNext called, currencyExistsBySymbol is false for symbol $key"
+                        )
+                        useCase.saveCurrencies(currency)
                     }
-                    Log.d(TAG, "getAllCurrencies: doAfterNext called, currencyExistsBySymbol is true")
+                    Log.d(
+                        TAG,
+                        "getAllCurrencies: doAfterNext called, currencyExistsBySymbol is true"
+                    )
                 }
             }
             .observeOn(AndroidSchedulers.mainThread()) // DownStream in Main thread
@@ -55,19 +61,19 @@ class HomeViewModel @Inject constructor(private val repositoryImpl: Repository) 
 
     fun convertCurrency(from: String, to: String, amount: Double) {
         val converterObservable =
-            repositoryImpl.convertCurrency(from, to, amount) // Creating Observable
+            useCase.convertCurrency(from, to, amount) // Creating Observable
         converterObservable.subscribeOn(Schedulers.io()) // Upstream in IO thread
             .doAfterNext {
                 val transition = Transition(amount, from, it.result, to)
                 Log.d(TAG, "convertCurrency: doAfterNext called, transition from $from to $to")
-                repositoryImpl.saveTransition(transition)
+                useCase.saveTransition(transition)
             }
             .observeOn(AndroidSchedulers.mainThread()) // Downstream in Main thread
             .subscribe(setConvertCurrencyObserver()) // Create the subscription
     }
 
     fun getCurrenciesLocally() {
-        val localCurrencies = repositoryImpl.getCurrenciesLocally() // Creating Observable
+        val localCurrencies = useCase.getCurrenciesLocally() // Creating Observable
         localCurrencies.subscribeOn(Schedulers.io()) // Upstream in IO thread
             .observeOn(AndroidSchedulers.mainThread()) // Downstream in Main thread
             .subscribe(setLocalCurrenciesObserver()) // Create the subscription

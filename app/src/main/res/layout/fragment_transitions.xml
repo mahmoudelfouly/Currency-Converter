@@ -82,49 +82,12 @@
         app:layout_constraintStart_toEndOf="@id/to_amount"
         app:layout_constraintTop_toBottomOf="@id/to" />
 
-    <TextView
-        android:id="@+id/from_amount_value"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/rv_compose"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@id/from_symbol"
-        app:layout_constraintStart_toStartOf="@id/from_amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/from_amount" />
-
-    <TextView
-        android:id="@+id/from_symbol_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@id/from"
-        app:layout_constraintStart_toEndOf="@id/from_amount"
-        app:layout_constraintTop_toBottomOf="@id/from_symbol" />
-
-    <TextView
-        android:id="@+id/to_amount_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@id/to_symbol"
-        app:layout_constraintStart_toStartOf="@id/to"
-        app:layout_constraintTop_toBottomOf="@id/to_amount" />
-
-    <TextView
-        android:id="@+id/to_symbol_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@id/to"
-        app:layout_constraintStart_toEndOf="@id/to_amount"
-        app:layout_constraintTop_toBottomOf="@id/to_symbol" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

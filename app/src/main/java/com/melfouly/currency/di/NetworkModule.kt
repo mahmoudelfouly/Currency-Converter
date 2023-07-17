@@ -1,7 +1,7 @@
 package com.melfouly.currency.di
 
-import com.melfouly.currency.network.MainInterceptor
-import com.melfouly.currency.network.RetrofitService
+import com.melfouly.data.network.MainInterceptor
+import com.melfouly.data.network.RetrofitService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
